@@ -5,7 +5,6 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { FiUser } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Api from "./Api";
 
 const LightWeather = (props) => {
   const {
@@ -67,13 +66,14 @@ const LightWeather = (props) => {
           border: backBorder,
           backdropFilter: 12,
         }}
-        className="w-[380px] h-[700px]  absolute z-10 ml-[40px] mt-[40px] rounded-3xl opacity-[.97]   blur-[.1] p-8 flex flex-col gap-3  "
+        className="w-[380px] min-h-[700px]  absolute z-10 ml-[40px] mt-[40px] rounded-3xl opacity-[.97]   blur-[.1] p-8 flex flex-col gap-3  "
       >
         <div className="flex items-center justify-between  ">
           <div>
             <p style={{ color: dateClr }}>{currentDate}</p>
             <p className="text-[30px] font-[600]" style={{ color: cityClr }}>
-              {weatherData?.name}
+              {/* {weatherData?.name} */}
+              {city}
             </p>
           </div>
           <MdOutlineLocationOn className="text-[30px]" />
@@ -83,15 +83,13 @@ const LightWeather = (props) => {
         </div>
         <div>
           <p id={tempID} className="text-[100px] font-[800] leading-normal ">
-            {weatherData?.main?.temp
-              ? `${Math.floor(weatherData.main.temp_min)}°C`
-              : ""}
+            {temp}
           </p>
           <p
             style={{ color: condClr }}
             className="text-xl font-semibold leading-[60px] "
           >
-            {weatherData?.weather?.[0]?.main || ""}
+            {condition}
           </p>
         </div>
         <div className="flex justify-between mt-5 ">
@@ -113,11 +111,11 @@ const LightWeather = (props) => {
           />
         </div>
       </div>
-      <Api
+      {/* <Api
         coordinates={coordinates}
         onSuccess={handleSuccess}
         onError={handleError}
-      />
+      /> */}
     </div>
   );
 };

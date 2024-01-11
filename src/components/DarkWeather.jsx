@@ -4,7 +4,7 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { FiUser } from "react-icons/fi";
 import { useState, useEffect } from "react";
 
-import Api from "./Api";
+// import Api from "./Api";
 const DarkWeather = (props) => {
   const {
     coordinates,
@@ -26,31 +26,32 @@ const DarkWeather = (props) => {
 
   const [weatherData, setWeatherData] = useState(null);
 
-  const handleSuccess = (data) => {
-    setWeatherData(data);
-    console.log(weatherData);
-  };
+  // const handleSuccess = (data) => {
+  //   setWeatherData(data);
+  //   console.log(weatherData);
+  // };
 
-  const handleError = (error) => {
-    console.error("Error:", error);
-  };
+  // const handleError = (error) => {
+  //   console.error("Error:", error);
+  // };
 
   return (
-    <div>
+    <div className="mt-[100px]">
       <div
         style={{
           backgroundColor: backClr,
           border: backBorder,
           backdropFilter: 12,
         }}
-        className="w-[380px] h-[700px] absolute z-10 bottom-[95px] rounded-3xl opacity-[.97] right-[110px]  blur-[.1] p-8 flex flex-col gap-3 ml-20  "
+        className="w-[380px] min-h-[700px] absolute z-10 bottom-[95px] rounded-3xl opacity-[.97] right-[110px]  blur-[.1] p-8 flex flex-col gap-3 ml-20  "
       >
         <div className="flex items-center justify-between  ">
           <div>
             <p style={{ color: dateClr }}>{currentDate}</p>
             <p className="text-[30px] font-[600]" style={{ color: cityClr }}>
               {" "}
-              {weatherData?.name}
+              {/* {weatherData?.name} */}
+              {city}
             </p>
           </div>
           <MdOutlineLocationOn className="text-[30px] text-[#9CA3AF]" />
@@ -60,15 +61,17 @@ const DarkWeather = (props) => {
         </div>
         <div>
           <p id={tempID} className="text-[100px] font-[800] leading-normal ">
-            {weatherData?.main?.temp
+            {/* {weatherData?.main?.temp
               ? `${Math.floor(weatherData.main.temp_max)}°C`
-              : ""}
+              : ""} */}
+            {temp}
           </p>
           <p
             style={{ color: condClr }}
             className="text-xl font-semibold leading-[60px] "
           >
-            {weatherData?.weather?.[1]?.main}
+            {/* {weatherData?.weather?.[1]?.main} */}
+            {condition}
           </p>
         </div>
         <div className="flex justify-between mt-5 ">
@@ -93,12 +96,12 @@ const DarkWeather = (props) => {
       <div className="absolute z-0 bottom-10 right-[60px]">
         <img src="/Ellipse 22.png" alt="" width={100} />
       </div>
-      <Api
+      {/* <Api
         city={city}
         coordinates={coordinates}
         onSuccess={handleSuccess}
         onError={handleError}
-      />
+      /> */}
     </div>
   );
 };
