@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
@@ -24,4 +24,18 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+} */
+
+/* YourPage.module.css or YourPage.scss or any styling approach you prefer */
+#day {
+  background-image: linear-gradient(to top, #6b7280, #111827);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+#night {
+  background-image: linear-gradient(to top, #111827, #fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
