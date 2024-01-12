@@ -1,11 +1,14 @@
 // Search.js
+
 import { IoMdSearch } from "react-icons/io";
-import { useState } from "react";
-import axios from "axios";
-import { fetchWeatherData } from "./Api";
+import { useState, useEffect } from "react";
+import { MdOutlineLocationOn } from "react-icons/md";
+
+import { fetchCitySuggestions, fetchWeatherData } from "./Api";
 
 const Search = (props) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
   const { placeholder, setWeatherData } = props;
 
   const iconStyle = {
@@ -13,31 +16,50 @@ const Search = (props) => {
     left: "380px",
     top: "50%",
     transform: "translateY(-50%)",
-
     fontSize: "26px",
   };
 
   const buttonClick = async () => {
     const speech = new SpeechSynthesisUtterance();
     speech.lang = "en";
-    speech.text = `Finding ${searchQuery}`;
+    speech.text = `${searchQuery}`;
     window.speechSynthesis.speak(speech);
 
-    const response = await fetchWeatherData(searchQuery);
-
-    setWeatherData(response);
-    // const response = await axios.get(
-    //   `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchQuery}.json?access_token=pk.eyJ1IjoidHVydXV1dSIsImEiOiJjbDBhZW15ZHAwMGhjM2RtZjB6dnltZnhjIn0.HSb4dmJFSM2USxDkTsScDg`
-    // );
+    const response = await fetchCitySuggestions(searchQuery);
+    setSuggestions(response.slice(0, 3));
   };
 
+  const handleSuggestionClick = async (city) => {
+    const response = await fetchWeatherData(city);
+    setWeatherData(response);
+
+    setSearchQuery(city);
+
+    setSuggestions([]);
+    const speech = new SpeechSynthesisUtterance();
+    speech.lang = "en";
+    speech.text = `${searchQuery}`;
+    window.speechSynthesis.speak(speech);
+  };
+
+  const fetchSuggestions = async () => {
+    const response = await fetchCitySuggestions(searchQuery);
+    console.log(response);
+    setSuggestions(response.slice(0, 3));
+  };
+
+  useEffect(() => {
+    if (searchQuery.trim() !== "") {
+      fetchSuggestions();
+    } else {
+      setSuggestions([]);
+    }
+  }, [searchQuery]);
+
   return (
-    <div className="flex gap-10">
-      <div>
-        <label
-          className="flex gap-10"
-          style={{ position: "relative", display: "inline-block" }}
-        >
+    <div className="flex gap-10 relative">
+      <div style={{ position: "relative" }}>
+        <label className="flex gap-10" style={{ display: "inline-block" }}>
           <button onClick={buttonClick}>
             <IoMdSearch
               className="text-[#ccc] hover:text-[#3c3c3c]"
@@ -54,7 +76,24 @@ const Search = (props) => {
             style={{ paddingLeft: "25px", fontSize: "18px" }}
           />
         </label>
-      </div>{" "}
+        {suggestions.length > 0 && (
+          <div className="">
+            {suggestions?.map((city, index) => (
+              <div
+                key={index}
+                className="suggestion-item bg-white absolute z-20 max-h-[200px] min-w-[420px] shadow-xl rounded-xl block p-6 mt-[10px] "
+                onClick={() => handleSuggestionClick(city.text)}
+              >
+                <div className="flex gap-6">
+                  {" "}
+                  <MdOutlineLocationOn className="self-center text-[20px]" />
+                  <p className="text-2xl">{city.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
